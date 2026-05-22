@@ -1,14 +1,14 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from database import engine, Base
-from routers import feedback
+from routers import feedback, etl, analytics
 
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI(
     title="Feedback Management System API",
-    description="Centralized feedback collection, storage, and management",
-    version="1.0.0",
+    description="Centralized feedback collection, storage, management, and ETL analytics",
+    version="2.0.0",
 )
 
 app.add_middleware(
@@ -20,6 +20,8 @@ app.add_middleware(
 )
 
 app.include_router(feedback.router)
+app.include_router(etl.router)
+app.include_router(analytics.router)
 
 
 @app.get("/", tags=["Health"])

@@ -1,6 +1,6 @@
 from pydantic import BaseModel, Field, validator
 from datetime import datetime
-from typing import Optional
+from typing import Optional, List
 
 
 class FeedbackCreate(BaseModel):
@@ -43,3 +43,77 @@ class FeedbackListResponse(BaseModel):
     total: int
     feedbacks: list[FeedbackResponse]
     average_rating: Optional[float]
+
+
+# ── ETL Schemas ───────────────────────────────────────────────────────────────
+
+class ETLRunResponse(BaseModel):
+    run_id: int
+    filename: str
+    file_type: str
+    status: str
+    triggered_at: datetime
+    completed_at: Optional[datetime]
+    total_rows: Optional[int]
+    valid_rows: Optional[int]
+    duplicate_rows: Optional[int]
+    invalid_rows: Optional[int]
+    loaded_rows: Optional[int]
+    error_message: Optional[str]
+
+    class Config:
+        from_attributes = True
+
+
+class ETLRunSummary(BaseModel):
+    run_id: int
+    filename: str
+    status: str
+    triggered_at: datetime
+    completed_at: Optional[datetime]
+    total_rows: Optional[int]
+    loaded_rows: Optional[int]
+    duplicate_rows: Optional[int]
+    invalid_rows: Optional[int]
+
+    class Config:
+        from_attributes = True
+
+
+# ── Analytics Schemas ─────────────────────────────────────────────────────────
+
+class AnalyticsSummary(BaseModel):
+    total_records: int
+    avg_rating: Optional[float]
+    total_programs: int
+    latest_run_id: Optional[int]
+    latest_run_at: Optional[datetime]
+
+
+class RatingDistributionItem(BaseModel):
+    rating: int
+    count: int
+    percentage: float
+    label: str
+
+
+class TrendItem(BaseModel):
+    month_year: str
+    count: int
+    avg_rating: float
+
+
+class ProgramAnalyticsResponse(BaseModel):
+    id: int
+    run_id: int
+    program_name: str
+    total_responses: int
+    avg_rating: float
+    five_star_count: int
+    four_star_count: int
+    three_star_count: int
+    two_star_count: int
+    one_star_count: int
+
+    class Config:
+        from_attributes = True

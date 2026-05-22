@@ -5,6 +5,8 @@ const NAV_LINKS = [
   { to: "/", label: "Dashboard" },
   { to: "/submit", label: "Submit Feedback" },
   { to: "/feedback", label: "All Feedback" },
+  { to: "/analytics", label: "Analytics" },
+  { to: "/etl", label: "ETL Import" },
 ];
 
 export default function Navbar() {
